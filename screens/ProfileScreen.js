@@ -7,7 +7,9 @@ import {
   ScrollView,
   StyleSheet,
   Dimensions,
+  TouchableOpacity,
 } from 'react-native';
+import Icon from 'react-native-vector-icons/Fontisto';
 
 const gridImages = [
   'https://images.pexels.com/photos/27938575/pexels-photo-27938575/free-photo-of-wind.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
@@ -29,31 +31,54 @@ const gridImages = [
 const userProfile = {
   username: 'JohnDoe',
   bio: 'Traveler | Photographer | Tech Enthusiast',
-  profilePicture: 'https://i.pravatar.cc/300',
+  profilePicture:
+    'https://images.pexels.com/photos/6076013/pexels-photo-6076013.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load',
   followers: 1234,
+  following: 567,
   posts: 56,
 };
 
 export default function ProfileScreen() {
   const {width} = Dimensions.get('window');
   const numColumns = 3;
-  const imageSize = width / numColumns - 20;
+  const imageSize = width / numColumns - 2; // Adjust grid spacing
 
   return (
     <ScrollView style={styles.container}>
+      {/* Profile Header */}
       <View style={styles.profileHeader}>
         <Image
           source={{uri: userProfile.profilePicture}}
           style={styles.profileImage}
         />
-        <View style={styles.profileInfo}>
-          <Text style={styles.username}>{userProfile.username}</Text>
-          <Text>{userProfile.bio}</Text>
-          <Text>{userProfile.followers} Followers</Text>
-          <Text>{userProfile.posts} Posts</Text>
+        <View style={styles.statsContainer}>
+          <View style={styles.stat}>
+            <Text style={styles.statNumber}>{userProfile.posts}</Text>
+            <Text style={styles.statLabel}>Posts</Text>
+          </View>
+          <View style={styles.stat}>
+            <Text style={styles.statNumber}>{userProfile.followers}</Text>
+            <Text style={styles.statLabel}>Followers</Text>
+          </View>
+          <View style={styles.stat}>
+            <Text style={styles.statNumber}>{userProfile.following}</Text>
+            <Text style={styles.statLabel}>Following</Text>
+          </View>
         </View>
       </View>
 
+      {/* Username and Bio */}
+      <View style={styles.profileDetails}>
+        <Text style={styles.username}>{userProfile.username}</Text>
+        <Text style={styles.bio}>{userProfile.bio}</Text>
+      </View>
+
+      {/* Edit Profile Button */}
+      <TouchableOpacity style={styles.editProfileButton}>
+        <Text style={styles.editProfileText}>Edit Profile</Text>
+      </TouchableOpacity>
+
+      {/* Grid of Posts */}
       <FlatList
         data={gridImages}
         renderItem={({item}) => (
@@ -74,30 +99,62 @@ export default function ProfileScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 10,
     backgroundColor: '#fff',
   },
   profileHeader: {
     flexDirection: 'row',
-    marginBottom: 20,
-    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: 15,
   },
   profileImage: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-    marginRight: 15,
+    width: 100,
+    height: 100,
+    borderRadius: 50,
   },
-  profileInfo: {
-    justifyContent: 'center',
+  statsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    flex: 1,
+    alignItems: 'center',
+  },
+  stat: {
+    alignItems: 'center',
+  },
+  statNumber: {
+    fontWeight: 'bold',
+    fontSize: 18,
+  },
+  statLabel: {
+    fontSize: 14,
+    color: '#777',
+  },
+  profileDetails: {
+    paddingHorizontal: 15,
+    marginBottom: 10,
   },
   username: {
     fontWeight: 'bold',
-    fontSize: 20,
-    marginBottom: 5,
+    fontSize: 18,
+  },
+  bio: {
+    fontSize: 14,
+    color: '#444',
+    marginTop: 5,
+  },
+  editProfileButton: {
+    marginHorizontal: 15,
+    marginBottom: 20,
+    paddingVertical: 8,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 5,
+    alignItems: 'center',
+  },
+  editProfileText: {
+    fontSize: 16,
+    fontWeight: 'bold',
   },
   postImage: {
-    margin: 5,
-    backgroundColor: '#f0f0f0',
+    margin: 1,
   },
 });
