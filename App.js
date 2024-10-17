@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import FeedScreen from './screens/FeedScreen';
@@ -9,6 +9,9 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 const Tab = createBottomTabNavigator();
 
 export default function App() {
+  // State to store the new image URI
+  const [newImageUri, setNewImageUri] = useState(null);
+
   return (
     <NavigationContainer>
       <Tab.Navigator
@@ -41,8 +44,18 @@ export default function App() {
           headerShown: false,
         })}>
         <Tab.Screen name="Feed" component={FeedScreen} />
-        <Tab.Screen name="Create Post" component={CreatePostScreen} />
-        <Tab.Screen name="Profile" component={ProfileScreen} />
+
+        {/* Pass setNewImageUri function to CreatePostScreen */}
+        <Tab.Screen name="Create Post">
+          {props => (
+            <CreatePostScreen {...props} setNewImageUri={setNewImageUri} />
+          )}
+        </Tab.Screen>
+
+        {/* Pass newImageUri to ProfileScreen */}
+        <Tab.Screen name="Profile">
+          {props => <ProfileScreen {...props} newImageUri={newImageUri} />}
+        </Tab.Screen>
       </Tab.Navigator>
     </NavigationContainer>
   );

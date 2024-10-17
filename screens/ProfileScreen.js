@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Fontisto';
 
-const gridImages = [
+const initialGridImages = [
   'https://images.pexels.com/photos/27938575/pexels-photo-27938575/free-photo-of-wind.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
   'https://images.pexels.com/photos/17286179/pexels-photo-17286179/free-photo-of-a-cup-of-coffee-and-lavender-on-the-table.jpeg?auto=compress&cs=tinysrgb&w=400&lazy=load',
   'https://images.pexels.com/photos/28665518/pexels-photo-28665518/free-photo-of-modern-train-station-architecture-in-hamburg.jpeg?auto=compress&cs=tinysrgb&w=400&lazy=load',
@@ -38,10 +38,24 @@ const userProfile = {
   posts: 56,
 };
 
-export default function ProfileScreen() {
+export default function ProfileScreen({route, newImageUri}) {
   const {width} = Dimensions.get('window');
   const numColumns = 3;
   const imageSize = width / numColumns - 2; // Adjust grid spacing
+
+  const [gridImages, setGridImages] = useState(initialGridImages);
+
+  // Check for newImageUri in route.params and update the gridImages array
+  useEffect(() => {
+    if (route.params?.newImageUri) {
+      setGridImages(prevImages => [route.params.newImageUri, ...prevImages]);
+    }
+  }, [route.params?.newImageUri]);
+  useEffect(() => {
+    if (newImageUri) {
+      setGridImages([newImageUri, ...gridImages]);
+    }
+  }, [newImageUri]);
 
   return (
     <ScrollView style={styles.container}>
