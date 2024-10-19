@@ -17,6 +17,7 @@ const CreatePostScreen = ({navigation, setNewImageUri}) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [selectedImage, setSelectedImage] = useState(null);
+  5;
 
   // Function to pick an image from the library
   const selectImage = async () => {
@@ -27,7 +28,7 @@ const CreatePostScreen = ({navigation, setNewImageUri}) => {
 
     if (!result.didCancel && result.assets.length > 0) {
       setSelectedImage(result.assets[0]); // Save the selected image
-    }
+    }a
   };
 
   // Validate form inputs before submitting
