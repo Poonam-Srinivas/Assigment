@@ -1,4 +1,5 @@
-import React, {useState, useEffect} from 'react';
+import {useNavigation} from '@react-navigation/native';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -10,7 +11,6 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Fontisto';
-
 const initialGridImages = [
   'https://images.pexels.com/photos/27938575/pexels-photo-27938575/free-photo-of-wind.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
   'https://images.pexels.com/photos/17286179/pexels-photo-17286179/free-photo-of-a-cup-of-coffee-and-lavender-on-the-table.jpeg?auto=compress&cs=tinysrgb&w=400&lazy=load',
@@ -29,11 +29,11 @@ const initialGridImages = [
 ];
 
 const userProfile = {
-  username: 'JohnDoe',
+  username: 'Wiley Vanissa',
   bio: 'Traveler | Photographer | Tech Enthusiast',
   profilePicture:
     'https://images.pexels.com/photos/6076013/pexels-photo-6076013.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load',
-  followers: 1234,
+  followers: 1328,
   following: 567,
   posts: 56,
 };
@@ -41,9 +41,9 @@ const userProfile = {
 export default function ProfileScreen({route, newImageUri}) {
   const {width} = Dimensions.get('window');
   const numColumns = 3;
-  const imageSize = width / numColumns - 2; // Adjust grid spacing
-
+  const imageSize = width / numColumns - 2;
   const [gridImages, setGridImages] = useState(initialGridImages);
+  const navigation = useNavigation(); // Use navigation
 
   // Check for newImageUri in route.params and update the gridImages array
   useEffect(() => {
@@ -51,6 +51,7 @@ export default function ProfileScreen({route, newImageUri}) {
       setGridImages(prevImages => [route.params.newImageUri, ...prevImages]);
     }
   }, [route.params?.newImageUri]);
+
   useEffect(() => {
     if (newImageUri) {
       setGridImages([newImageUri, ...gridImages]);
@@ -67,7 +68,7 @@ export default function ProfileScreen({route, newImageUri}) {
         />
         <View style={styles.statsContainer}>
           <View style={styles.stat}>
-            <Text style={styles.statNumber}>{userProfile.posts}</Text>
+            <Text style={styles.statNumber}>{gridImages.length}</Text>
             <Text style={styles.statLabel}>Posts</Text>
           </View>
           <View style={styles.stat}>
@@ -96,10 +97,16 @@ export default function ProfileScreen({route, newImageUri}) {
       <FlatList
         data={gridImages}
         renderItem={({item}) => (
-          <Image
-            source={{uri: item}}
-            style={[styles.postImage, {width: imageSize, height: imageSize}]}
-          />
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate('ImageDetails', {imageUrl: item})
+            } // Navigate on press
+          >
+            <Image
+              source={{uri: item}}
+              style={[styles.postImage, {width: imageSize, height: imageSize}]}
+            />
+          </TouchableOpacity>
         )}
         keyExtractor={(item, index) => index.toString()}
         numColumns={numColumns}

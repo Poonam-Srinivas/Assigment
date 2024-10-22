@@ -15,14 +15,18 @@ import Animated, {
   useSharedValue,
 } from 'react-native-reanimated';
 
-const {width} = Dimensions.get('window');
 
 type SwiperProps = {
-  images: string[],
-  paginationDotStyle?: StyleProp<ViewStyle>,
+  images: string[];
+  paginationDotStyle?: StyleProp<ViewStyle>;
+  imageWidth: number;
 };
 
-export const Swiper = ({images, paginationDotStyle}: SwiperProps) => {
+export const Swiper = ({
+  images,
+  paginationDotStyle,
+  imageWidth,
+}: SwiperProps) => {
   const scrollX = useSharedValue(0);
   const flatListRef = useRef(null);
 
@@ -36,13 +40,13 @@ export const Swiper = ({images, paginationDotStyle}: SwiperProps) => {
     const animatedStyle = useAnimatedStyle(() => {
       const opacity = interpolate(
         scrollX.value,
-        [(index - 1) * width, index * width, (index + 1) * width],
+        [(index - 1) * imageWidth, index * imageWidth, (index + 1) * imageWidth],
         [0.3, 1, 0.3],
         Extrapolation.CLAMP,
       );
       const scale = interpolate(
         scrollX.value,
-        [(index - 1) * width, index * width, (index + 1) * width],
+        [(index - 1) * imageWidth, index * imageWidth, (index + 1) * imageWidth],
         [1, 1.5, 1],
         Extrapolation.CLAMP,
       );
@@ -69,7 +73,10 @@ export const Swiper = ({images, paginationDotStyle}: SwiperProps) => {
         onScroll={scrollHandler}
         scrollEventThrottle={16}
         renderItem={({item}) => (
-          <Image source={{uri: item}} style={styles.image} />
+          <Image
+            source={{uri: item}}
+            style={{width: imageWidth, height: imageWidth}}
+          />
         )}
       />
 
@@ -84,10 +91,6 @@ export const Swiper = ({images, paginationDotStyle}: SwiperProps) => {
 };
 
 const styles = StyleSheet.create({
-  image: {
-    width: width,
-    height: width,
-  },
   pagination: {
     flexDirection: 'row',
     alignSelf: 'center',

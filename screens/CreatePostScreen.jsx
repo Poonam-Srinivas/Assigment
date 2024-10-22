@@ -28,7 +28,8 @@ const CreatePostScreen = ({navigation, setNewImageUri}) => {
 
     if (!result.didCancel && result.assets.length > 0) {
       setSelectedImage(result.assets[0]); // Save the selected image
-    }a
+    }
+    a;
   };
 
   // Validate form inputs before submitting

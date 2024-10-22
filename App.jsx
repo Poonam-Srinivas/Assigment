@@ -1,12 +1,34 @@
 import React, {useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {createStackNavigator} from '@react-navigation/stack';
 import FeedScreen from './screens/FeedScreen';
 import CreatePostScreen from './screens/CreatePostScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import ImageDetailsScreen from './screens/imageDetailsScreen';
 
 const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator();
+
+// Create a Profile Stack Navigator
+function ProfileStack({newImageUri}) {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="ProfileScreen"
+        options={{headerShown: false}} // Hide the header for the profile
+      >
+        {props => <ProfileScreen {...props} newImageUri={newImageUri} />}
+      </Stack.Screen>
+      <Stack.Screen
+        name="ImageDetails"
+        component={ImageDetailsScreen}
+        options={{title: 'Image Details'}}
+      />
+    </Stack.Navigator>
+  );
+}
 
 export default function App() {
   // State to store the new image URI
@@ -41,7 +63,7 @@ export default function App() {
             backgroundColor: '#fff',
             paddingBottom: 5,
           },
-          headerShown: false,
+          headerShown: false, // Disable headers for tabs
         })}>
         <Tab.Screen name="Feed" component={FeedScreen} />
 
@@ -52,9 +74,9 @@ export default function App() {
           )}
         </Tab.Screen>
 
-        {/* Pass newImageUri to ProfileScreen */}
+        {/* Pass newImageUri to ProfileStack */}
         <Tab.Screen name="Profile">
-          {props => <ProfileScreen {...props} newImageUri={newImageUri} />}
+          {props => <ProfileStack {...props} newImageUri={newImageUri} />}
         </Tab.Screen>
       </Tab.Navigator>
     </NavigationContainer>

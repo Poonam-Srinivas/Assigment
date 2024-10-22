@@ -6,10 +6,10 @@ import {
   Image,
   StyleSheet,
   TouchableOpacity,
-  ScrollView,
+  Dimensions,
 } from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import {Swiper} from './Swiper'; // Assuming this is your Swiper component
+import {Swiper} from './Swiper'; // Make sure this path is correct for your Swiper component
 
 const feedData = [
   {
@@ -70,7 +70,7 @@ const feedData = [
   },
   {
     id: 3,
-    name: 'Jane Smith',
+    name: 'Justin smith',
     profileImage:
       'https://images.pexels.com/photos/28266884/pexels-photo-28266884/free-photo-of-a-woman-with-her-eyes-closed-and-her-hands-on-her-face.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load',
     arrayImage: [
@@ -98,7 +98,7 @@ const feedData = [
   },
   {
     id: 4,
-    name: 'Jane Smith',
+    name: 'George sean',
     profileImage:
       'https://images.pexels.com/photos/25695917/pexels-photo-25695917/free-photo-of-mother-holding-and-hugging-son-on-beach.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load',
     arrayImage: [
@@ -126,7 +126,7 @@ const feedData = [
   },
   {
     id: 5,
-    name: 'Jane Smith',
+    name: 'Alex Matt',
     profileImage:
       'https://images.pexels.com/photos/27603834/pexels-photo-27603834/free-photo-of-ao-dai.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load',
     arrayImage: [
@@ -153,14 +153,9 @@ const feedData = [
     ],
   },
 ];
+const {width} = Dimensions.get('window');
 
-const statusImages = [
-  'https://images.pexels.com/photos/5634776/pexels-photo-5634776.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load',
-  'https://images.pexels.com/photos/27750569/pexels-photo-27750569/free-photo-of-model-in-black-tube-top-and-leggings-holding-her-hat.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load',
-  'https://images.pexels.com/photos/28266884/pexels-photo-28266884/free-photo-of-a-woman-with-her-eyes-closed-and-her-hands-on-her-face.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load',
-  'https://images.pexels.com/photos/25695917/pexels-photo-25695917/free-photo-of-mother-holding-and-hugging-son-on-beach.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load',
-  'https://images.pexels.com/photos/27603834/pexels-photo-27603834/free-photo-of-ao-dai.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load',
-];
+const FEED_PADDING = 10;
 
 const Feed = () => {
   const [likedItems, setLikedItems] = useState({});
@@ -174,14 +169,17 @@ const Feed = () => {
 
   const renderItem = ({item}) => (
     <View style={styles.feedItem}>
-      <View></View>
       <View style={styles.header}>
         <Image source={{uri: item.profileImage}} style={styles.profileImage} />
         <Text style={styles.name}>{item.name}</Text>
       </View>
 
-      {/* Swiper component to display the image carousel */}
-      <Swiper images={item.arrayImage.map(imageObj => imageObj.image)} />
+      {/* Use the Swiper component to display the image carousel */}
+      <Swiper
+        images={item.arrayImage.map(imageObj => imageObj.image)}
+        imageWidth={width - FEED_PADDING * 2}
+        paginationDotStyle={styles.paginationDotStyle}
+      />
 
       <View style={styles.iconContainer}>
         <TouchableOpacity onPress={() => toggleLike(item.id)}>
@@ -195,42 +193,17 @@ const Feed = () => {
     </View>
   );
 
-  const renderStatusItem = ({item}) => (
-    <TouchableOpacity style={styles.statusItem}>
-      <Image source={{uri: item}} style={styles.statusImage} />
-    </TouchableOpacity>
-  );
-
   return (
-    <View style={styles.container}>
-      {/* Status Section using FlatList */}
-      <View style={styles.statusContainer}>
-        <FlatList
-          data={statusImages}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          keyExtractor={(item, index) => index.toString()}
-          renderItem={renderStatusItem}
-          contentContainerStyle={styles.statusScrollContent}
-        />
-      </View>
-
-      {/* Feed List */}
-      <FlatList
-        data={feedData}
-        keyExtractor={item => item.id.toString()}
-        renderItem={renderItem}
-      />
-    </View>
+    <FlatList
+      data={feedData}
+      keyExtractor={item => item.id.toString()}
+      renderItem={renderItem}
+    />
   );
 };
 
 // Styles
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f0f0f0',
-  },
   feedItem: {
     marginBottom: 20,
     backgroundColor: '#fff',
@@ -270,26 +243,11 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#FF0000',
   },
-  // Status styles
-  statusContainer: {
-    paddingHorizontal: 10,
-    paddingVertical: 15,
-    backgroundColor: '#fff',
-    marginBottom: 10,
-  },
-  statusScrollContent: {
-    alignItems: 'center',
-  },
-  statusItem: {
-    marginRight: 15,
-    alignItems: 'center',
-  },
-  statusImage: {
-    width: 70,
-    height: 70,
-    borderRadius: 35,
-    borderWidth: 2,
-    borderColor: '#FF4500',
+  paginationDotStyle: {
+    backgroundColor: '#666',
+    marginTop: 10,
+    height: 6,
+    width: 6,
   },
 });
 
