@@ -5,13 +5,14 @@ import {createStackNavigator} from '@react-navigation/stack';
 import FeedScreen from './screens/FeedScreen';
 import CreatePostScreen from './screens/CreatePostScreen';
 import ProfileScreen from './screens/ProfileScreen';
+
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import ImageDetailsScreen from './screens/imageDetailsScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
-// Create a Profile Stack Navigator
+// Profile Stack with newImageUri prop
 function ProfileStack({newImageUri}) {
   return (
     <Stack.Navigator>

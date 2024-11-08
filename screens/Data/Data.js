@@ -1,22 +1,28 @@
-import React, {useState} from 'react';
-import {
-  FlatList,
-  View,
-  Text,
-  Image,
-  StyleSheet,
-  TouchableOpacity,
-  Dimensions,
-} from 'react-native';
-import AntDesign from 'react-native-vector-icons/AntDesign';
-import {Swiper} from './Swiper'; // Make sure this path is correct for your Swiper component
+import {StyleSheet, Text, View} from 'react-native';
+import React from 'react';
+
+const initialGridImages = [
+  'https://images.pexels.com/photos/27938575/pexels-photo-27938575/free-photo-of-wind.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+  'https://images.pexels.com/photos/17286179/pexels-photo-17286179/free-photo-of-a-cup-of-coffee-and-lavender-on-the-table.jpeg?auto=compress&cs=tinysrgb&w=400&lazy=load',
+  'https://images.pexels.com/photos/28665518/pexels-photo-28665518/free-photo-of-modern-train-station-architecture-in-hamburg.jpeg?auto=compress&cs=tinysrgb&w=400&lazy=load',
+  'https://images.pexels.com/photos/18760208/pexels-photo-18760208/free-photo-of-leaves-on-the-birch-tree.jpeg?auto=compress&cs=tinysrgb&w=400&lazy=load',
+  'https://images.pexels.com/photos/27163466/pexels-photo-27163466/free-photo-of-woman-reading-a-book-in-shadow.jpeg?auto=compress&cs=tinysrgb&w=400&lazy=load',
+  'https://images.pexels.com/photos/28494944/pexels-photo-28494944/free-photo-of-creative-portrait-with-mirror-reflection-in-berlin.jpeg?auto=compress&cs=tinysrgb&w=400&lazy=load',
+  'https://images.pexels.com/photos/28859391/pexels-photo-28859391/free-photo-of-elegant-table-setting-with-soft-pink-touches.jpeg?auto=compress&cs=tinysrgb&w=400&lazy=load',
+  'https://images.pexels.com/photos/28704749/pexels-photo-28704749/free-photo-of-cozy-matcha-latte-with-autumn-decor-on-rustic-table.jpeg?auto=compress&cs=tinysrgb&w=400&lazy=load',
+  'https://images.pexels.com/photos/20465554/pexels-photo-20465554/free-photo-of-close-up-of-a-canon-slr-camera-sitting-on-a-tree-stump.jpeg?auto=compress&cs=tinysrgb&w=400&lazy=load',
+  'https://images.pexels.com/photos/12679386/pexels-photo-12679386.jpeg?auto=compress&cs=tinysrgb&w=400&lazy=load',
+  'https://images.pexels.com/photos/28766049/pexels-photo-28766049/free-photo-of-healthy-oatmeal-breakfast-with-fresh-blueberries.jpeg?auto=compress&cs=tinysrgb&w=400&lazy=load',
+  'https://images.pexels.com/photos/19025446/pexels-photo-19025446/free-photo-of-aerial-view-of-autumnal-forest.jpeg?auto=compress&cs=tinysrgb&w=400&lazy=load',
+  'https://images.pexels.com/photos/28368989/pexels-photo-28368989/free-photo-of-a-woman-with-long-hair-and-brown-eyes.jpeg?auto=compress&cs=tinysrgb&w=400&lazy=load',
+  'https://images.pexels.com/photos/28784083/pexels-photo-28784083/free-photo-of-abstract-close-up-of-dried-wheat-stalks.jpeg?auto=compress&cs=tinysrgb&w=400&lazy=load',
+];
 const feedData = [
   {
     id: 1,
     name: 'John Doe',
     profileImage:
       'https://images.pexels.com/photos/5634776/pexels-photo-5634776.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load',
-    date: '2024-10-23',
     arrayImage: [
       {
         id: 1,
@@ -45,7 +51,6 @@ const feedData = [
     name: 'Jane Smith',
     profileImage:
       'https://images.pexels.com/photos/27750569/pexels-photo-27750569/free-photo-of-model-in-black-tube-top-and-leggings-holding-her-hat.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load',
-    date: '2024-10-24',
     arrayImage: [
       {
         id: 1,
@@ -74,7 +79,6 @@ const feedData = [
     name: 'Justin smith',
     profileImage:
       'https://images.pexels.com/photos/28266884/pexels-photo-28266884/free-photo-of-a-woman-with-her-eyes-closed-and-her-hands-on-her-face.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load',
-    date: '2024-09-27',
     arrayImage: [
       {
         id: 1,
@@ -103,7 +107,6 @@ const feedData = [
     name: 'George sean',
     profileImage:
       'https://images.pexels.com/photos/25695917/pexels-photo-25695917/free-photo-of-mother-holding-and-hugging-son-on-beach.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load',
-    date: '2024-08-12',
     arrayImage: [
       {
         id: 1,
@@ -132,7 +135,6 @@ const feedData = [
     name: 'Alex Matt',
     profileImage:
       'https://images.pexels.com/photos/27603834/pexels-photo-27603834/free-photo-of-ao-dai.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load',
-    date: '2024-04-23',
     arrayImage: [
       {
         id: 1,
@@ -157,109 +159,5 @@ const feedData = [
     ],
   },
 ];
-const {width} = Dimensions.get('window');
 
-const FEED_PADDING = 10;
-
-const Feed = () => {
-  const [likedItems, setLikedItems] = useState({});
-
-  const toggleLike = id => {
-    setLikedItems(prevLikedItems => ({
-      ...prevLikedItems,
-      [id]: !prevLikedItems[id],
-    }));
-  };
-
-  const renderItem = ({item}) => (
-    <View style={styles.feedItem}>
-      <View style={styles.header}>
-        <Image source={{uri: item.profileImage}} style={styles.profileImage} />
-        <Text style={styles.name}>{item.name}</Text>
-      </View>
-
-      {/* Use the Swiper component to display the image carousel */}
-      <Swiper
-        images={item.arrayImage.map(imageObj => imageObj.image)}
-        imageWidth={width - FEED_PADDING * 2}
-        paginationDotStyle={styles.paginationDotStyle}
-      />
-
-      <View style={styles.iconContainer}>
-        <TouchableOpacity onPress={() => toggleLike(item.id)}>
-          <AntDesign
-            name={likedItems[item.id] ? 'heart' : 'hearto'}
-            size={23}
-            color={likedItems[item.id] ? '#FF0000' : '#000'}
-          />
-        </TouchableOpacity>
-        <Text style={styles.date}>{item.date}</Text>
-      </View>
-    </View>
-  );
-
-  return (
-    <FlatList
-      data={feedData}
-      keyExtractor={item => item.id.toString()}
-      renderItem={renderItem}
-    />
-  );
-};
-
-// Styles
-const styles = StyleSheet.create({
-  feedItem: {
-    marginBottom: 20,
-    backgroundColor: '#fff',
-    borderRadius: 10,
-    padding: 10,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 0.2,
-    shadowRadius: 1.41,
-    elevation: 2,
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 10,
-  },
-  profileImage: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    marginRight: 10,
-  },
-  name: {
-    fontWeight: 'bold',
-    fontSize: 16,
-  },
-  iconContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 5,
-  },
-  date: {
-    fontSize: 12,
-    color: '#888',
-    flex: 1, // pushes the date to the right
-    textAlign: 'right', // aligns the date to the end of the container
-  },
-  iconText: {
-    marginLeft: 8,
-    fontSize: 14,
-    color: '#FF0000',
-  },
-  paginationDotStyle: {
-    backgroundColor: '#666',
-    marginTop: 10,
-    height: 6,
-    width: 6,
-  },
-});
-
-export default Feed;
+export {initialGridImages, feedData};

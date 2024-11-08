@@ -59,7 +59,7 @@ export default function ProfileScreen({route, newImageUri}) {
   }, [newImageUri]);
 
   return (
-    <ScrollView style={styles.container}>
+    <View style={styles.container}>
       {/* Profile Header */}
       <View style={styles.profileHeader}>
         <Image
@@ -113,7 +113,7 @@ export default function ProfileScreen({route, newImageUri}) {
         contentContainerStyle={{paddingBottom: 10}}
         showsVerticalScrollIndicator={false}
       />
-    </ScrollView>
+    </View>
   );
 }
 

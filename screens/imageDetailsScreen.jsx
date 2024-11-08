@@ -11,7 +11,6 @@ export default function ImageDetailsScreen({route}) {
         source={{uri: imageUrl}}
         style={[styles.image, {width, height: width}]}
       />
-      <Text style={styles.imageDetails}>Image Details for: {imageUrl}</Text>
     </View>
   );
 }
