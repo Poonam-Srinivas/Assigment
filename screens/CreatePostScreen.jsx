@@ -46,7 +46,9 @@ const CreatePostScreen = ({navigation, setNewImageUri}) => {
     if (validateForm()) {
       // Pass the selected image URI to the App component
       setNewImageUri(selectedImage.uri);
-
+      setTitle('');
+      setDescription('');
+      setSelectedImage(null);
       // Navigate to the Profile screen after the post is created
       navigation.navigate('Profile');
     }
@@ -107,6 +109,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginBottom: 16,
     backgroundColor: '#f9f9f9',
+    color: '#222',
   },
   textArea: {
     borderWidth: 1,
@@ -117,6 +120,7 @@ const styles = StyleSheet.create({
     textAlignVertical: 'top',
     marginBottom: 16,
     backgroundColor: '#f9f9f9',
+    color: '#222',
   },
   imagePicker: {
     justifyContent: 'center',

@@ -144,6 +144,7 @@ const styles = StyleSheet.create({
   statNumber: {
     fontWeight: 'bold',
     fontSize: 18,
+    color: '#333',
   },
   statLabel: {
     fontSize: 14,
@@ -174,6 +175,7 @@ const styles = StyleSheet.create({
   editProfileText: {
     fontSize: 16,
     fontWeight: 'bold',
+    color: '#333',
   },
   postImage: {
     margin: 1,
